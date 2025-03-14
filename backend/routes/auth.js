@@ -4,6 +4,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('../config/jwtSecret');
+const adminMiddleware = require('../middleware/adminMiddleware');
 
 // Signup route
 router.post('/signup', async (req, res) => {
@@ -68,9 +69,9 @@ router.post('/login', async (req, res) => {
 });
 
 // Get user by ID
-router.get('/user/:id', async (req, res) => {
+router.get('/user', adminMiddleware, async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.user.id).select('-password');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

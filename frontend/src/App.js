@@ -11,6 +11,9 @@ import Scheduler from './pages/Scheduler';
 import EditPet from './pages/EditPet';
 import AdminDashboard from './admin/AdminDashboard';
 import AdminLogin from './admin/AdminLogin';
+import AdminUserManagement from './admin/AdminUserManagement'; // Import the new component
+import AdminPetManagement from './admin/AdminPetManagement';
+import AdminSettings from './admin/AdminSettings';
 
 function App() {
     return (
@@ -33,6 +36,9 @@ function App() {
                 {/* Protected route for admins */}
                 <Route element={<ProtectedRoute isAdminRoute={true} />}>
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/users" element={<AdminUserManagement />} /> {/* New admin-only route */}
+                    <Route path="/admin/pets" element={<AdminPetManagement />} />
+                    <Route path="/admin/settings" element={<AdminSettings />} />
                 </Route>
             </Routes>
         </BrowserRouter>

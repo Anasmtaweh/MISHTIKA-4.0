@@ -25,6 +25,9 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes); // Use auth routes
 app.use('/pets', petRoutes); // Use pet routes
 app.use('/admin', adminRoutes); // Use admin routes
+// Add new routes for user management
+app.use('/admin/users', adminRoutes);
+app.use('/admin/pets', adminRoutes);
 
 // Start the server
 app.listen(port, () => {

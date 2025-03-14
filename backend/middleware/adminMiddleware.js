@@ -13,7 +13,8 @@ const adminMiddleware = (req, res, next) => {
         if (decoded.role !== 'admin') {
             return res.status(403).json({ message: 'Access denied. Admin role required' });
         }
-        req.user = decoded;
+        req.user = decoded; // Set the decoded token as req.user
+        req.user.id = decoded.id; // Set the user id
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Invalid token' });

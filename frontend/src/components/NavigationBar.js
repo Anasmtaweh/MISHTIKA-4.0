@@ -14,11 +14,13 @@ function NavigationBar() {
 
     let isLoggedIn = !!token;
     let showAdminLink = false;
+    let showUserLink = false;
 
     if (token) {
         try {
             const decodedToken = JSON.parse(atob(token.split('.')[1]));
             showAdminLink = decodedToken.role === 'admin';
+            showUserLink = decodedToken.role === 'user'; // Add this line
         } catch (error) {
             console.error('Error decoding token:', error);
         }
@@ -37,15 +39,24 @@ function NavigationBar() {
                     <Nav className="me-auto">
                         {!isLoggedIn && <Nav.Link as={Link} to="/">Login</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
-                        {isLoggedIn && (
+                        {isLoggedIn && showUserLink && (
                             <>
                                 <Nav.Link as={Link} to="/petprofile">Pet Profile</Nav.Link>
                                 <Nav.Link as={Link} to="/petform">Add Pet</Nav.Link>
-                                {showAdminLink && <Nav.Link as={Link} to="/admin/dashboard">Admin Dashboard</Nav.Link>}
+                                <Nav.Link as={Link} to="/aichat">AI Chat</Nav.Link>
+                                <Nav.Link as={Link} to="/scheduler">Scheduler</Nav.Link>
                             </>
                         )}
-                        <Nav.Link as={Link} to="/aichat">AI Chat</Nav.Link>
-                        <Nav.Link as={Link} to="/scheduler">Scheduler</Nav.Link>
+                        {isLoggedIn && showAdminLink && (
+                            <>
+                                <Nav.Link as={Link} to="/admin/dashboard">Admin Dashboard</Nav.Link>
+                                <Nav.Link as={Link} to="/admin/users">User Management</Nav.Link>
+                                <Nav.Link as={Link} to="/admin/pets">Pet Management</Nav.Link>
+                                <Nav.Link as={Link} to="/admin/settings">Settings</Nav.Link>
+
+                            </>
+                        )}
+
                     </Nav>
                     {isLoggedIn && (
                         <Button variant="light" onClick={handleLogout}>
