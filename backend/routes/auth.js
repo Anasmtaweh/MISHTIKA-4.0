@@ -49,6 +49,10 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
+        // Check if the user is active
+        if (!user.isActive) {
+            return res.status(403).json({ message: 'Access denied. User is inactive' });
+        }
 
         // Check password
         console.log("Entered password:", password);

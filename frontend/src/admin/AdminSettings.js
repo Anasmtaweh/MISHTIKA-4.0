@@ -54,6 +54,7 @@ function AdminSettings() {
             setConfirmNewPassword('');
         } catch (err) {
             console.error('Error updating password:', err);
+            // Access the error message from err.response.data.message
             setError(err.response?.data?.message || 'An error occurred while updating password.');
         }
     };

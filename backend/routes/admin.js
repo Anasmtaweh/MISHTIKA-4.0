@@ -97,11 +97,19 @@ router.put('/settings/password', adminMiddleware, async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Incorrect current password' });
         }
+
+        // Check if the new password is the same as the current password
+        const isSamePassword = await bcrypt.compare(newPassword, user.password);
+        if (isSamePassword) {
+            return res.status(400).json({ message: 'New password cannot be the same as the current password' });
+        }
+
         // Validate the new password
         const isValidNewPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(newPassword);
         if (!isValidNewPassword) {
             return res.status(400).json({ message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' });
         }
+
         // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         user.password = hashedPassword;

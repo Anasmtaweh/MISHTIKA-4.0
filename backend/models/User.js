@@ -16,8 +16,11 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'Password must be at least 8 characters long'],
         validate: {
             validator: function (v) {
-                // Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v);
+                // Only validate if the password is not already hashed
+                if (!v.startsWith('$2b$')) { // Check if it's a bcrypt hash
+                    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v);
+                }
+                return true; // Skip validation if it's already hashed
             },
             message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
         },
@@ -57,6 +60,5 @@ userSchema.pre('save', async function (next) {
 });
 
 const User = mongoose.model('User', userSchema, 'users');
-
 
 module.exports = User;
