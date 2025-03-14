@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema({
         min: [13, 'Age must be at least 13'],
         max: [120, 'Age must be less than 120'],
     },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
+    },
     isActive: {
         type: Boolean,
         default: true,
@@ -47,6 +52,7 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema, 'users');
+
 
 module.exports = User;

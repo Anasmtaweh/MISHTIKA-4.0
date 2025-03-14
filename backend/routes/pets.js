@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/Pet');
+const User = require('../models/User'); // Import the User model
 
 // Add Pet
 router.post('/add', async (req, res) => {
@@ -30,7 +31,12 @@ router.post('/add', async (req, res) => {
 router.get('/owner/:ownerId', async (req, res) => {
     try {
         const pets = await Pet.find({ owner: req.params.ownerId });
-        res.json(pets);
+        // Fetch owner names for each pet
+        const petsWithOwnerNames = await Promise.all(pets.map(async (pet) => {
+            const owner = await User.findById(pet.owner);
+            return { ...pet._doc, ownerName: owner ? owner.username : 'Unknown' }; // add owner name to the pet
+        }));
+        res.json(petsWithOwnerNames);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

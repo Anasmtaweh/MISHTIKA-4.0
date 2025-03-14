@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function Login() {
+function AdminLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -23,16 +23,16 @@ function Login() {
                 password,
             });
 
-            console.log('Login successful:', response.data);
+            console.log('Admin Login successful:', response.data);
             // Store token in local storage
             localStorage.setItem('token', response.data.token);
-            if (response.data.role === 'admin') {
+              if (response.data.role === 'admin') {
                 navigate('/admin/dashboard');
-            } else {
-                navigate('/petprofile');
-            }
+               } else {
+                setError('Invalid credentials.');
+               }
         } catch (err) {
-            console.error('Login error:', err.response?.data || err.message);
+            console.error('Admin Login error:', err.response?.data || err.message);
             if (err.response?.data?.message === 'Invalid credentials') {
                 setError('Invalid email or password.');
             } else {
@@ -45,7 +45,7 @@ function Login() {
         <Container className="mt-5">
             <Row className="justify-content-md-center">
                 <Col md={6}>
-                    <h1>Login Page</h1>
+                    <h1>Admin Login</h1>
                     {error && <div className="alert alert-danger">{error}</div>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -59,17 +59,8 @@ function Login() {
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Login
+                            Admin Login
                         </Button>
-                        <div className="mt-3">
-                            <p>
-                                Don't have an account?{' '}
-                                <Link to="/signup">Signup</Link>
-                            </p>
-                            <p>
-                                Are you an admin? <Link to="/admin/login">Admin Login</Link>
-                            </p>
-                        </div>
                     </Form>
                 </Col>
             </Row>
@@ -77,4 +68,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default AdminLogin;

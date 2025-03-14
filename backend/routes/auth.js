@@ -22,7 +22,7 @@ router.post('/signup', async (req, res) => {
         }
 
         // Create new user
-        const newUser = new User({ email, password, username, age });
+        const newUser = new User({ email, password, username, age, role: 'user' });
         await newUser.save();
 
         res.status(201).json({ message: 'User created successfully', user: newUser });
@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-
+         console.log("Login attempt for email:", email);
         // Validate input
         if (!email || !password) {
             return res.status(400).json({ message: 'Email and password are required' });
@@ -44,20 +44,23 @@ router.post('/login', async (req, res) => {
 
         // Find the user
         const user = await User.findOne({ email });
+        console.log("User found:", user);
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         // Check password
+        console.log("Entered password:", password);
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log("Password match:", isMatch);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         // Generate JWT
-        const token = jwt.sign({ id: user._id }, jwtSecret.secret, { expiresIn: '1h' }); // Remove isAdmin
+        const token = jwt.sign({ id: user._id, role: user.role }, jwtSecret.secret, { expiresIn: '1h' });
 
-        res.json({ token, message: 'Logged in successfully'}); // remove isAdmin
+        res.json({ token, message: 'Logged in successfully', role: user.role, isActive: user.isActive }); // send back the role
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

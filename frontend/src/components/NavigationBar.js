@@ -9,9 +9,20 @@ function NavigationBar() {
     const location = useLocation();
     const isLoginPage = location.pathname === '/';
     const isSignupPage = location.pathname === '/signup';
+    const isAdminLoginPage = location.pathname === '/admin/login';
     const token = localStorage.getItem('token');
 
     let isLoggedIn = !!token;
+    let showAdminLink = false;
+
+    if (token) {
+        try {
+            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+            showAdminLink = decodedToken.role === 'admin';
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    }
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -19,7 +30,7 @@ function NavigationBar() {
     };
 
     return (
-        !isLoginPage && !isSignupPage && (
+        !isLoginPage && !isSignupPage && !isAdminLoginPage && (
             <Navbar bg="dark" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand href="#home">Pet Project</Navbar.Brand>
@@ -30,6 +41,7 @@ function NavigationBar() {
                             <>
                                 <Nav.Link as={Link} to="/petprofile">Pet Profile</Nav.Link>
                                 <Nav.Link as={Link} to="/petform">Add Pet</Nav.Link>
+                                {showAdminLink && <Nav.Link as={Link} to="/admin/dashboard">Admin Dashboard</Nav.Link>}
                             </>
                         )}
                         <Nav.Link as={Link} to="/aichat">AI Chat</Nav.Link>
