@@ -41,6 +41,12 @@ function AdminSettings() {
             setError('New passwords do not match.');
             return;
         }
+        // Basic password validation on the frontend
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#+-])[A-Za-z\d@$!%*?&#+-]{8,}$/; // Updated regex here
+        if (!passwordRegex.test(newPassword)) {
+            setError('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long');
+            return;
+        }
 
         try {
             await axios.put(
@@ -54,7 +60,6 @@ function AdminSettings() {
             setConfirmNewPassword('');
         } catch (err) {
             console.error('Error updating password:', err);
-            // Access the error message from err.response.data.message
             setError(err.response?.data?.message || 'An error occurred while updating password.');
         }
     };
@@ -62,7 +67,11 @@ function AdminSettings() {
         e.preventDefault();
         setError('');
         setSuccess('');
-
+        // Validate age on the frontend
+        if (age < 13 || age > 120) {
+            setError('Age must be between 13 and 120.');
+            return;
+        }
         try {
             await axios.put(
                 'http://localhost:3001/admin/settings/profile',
@@ -108,7 +117,7 @@ function AdminSettings() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Age</Form.Label>
-                    <Form.Control type="number" value={age} onChange={(e) => setAge(e.target.value)} required />
+                    <Form.Control type="number" value={age} onChange={(e) => setAge(e.target.value)} required min="13" max="120"/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Save Profile Changes
