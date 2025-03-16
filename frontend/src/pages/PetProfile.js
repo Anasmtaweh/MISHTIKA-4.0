@@ -6,8 +6,12 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Link } from 'react-router-dom';
+import styles from './PetProfile.module.css'; // Import the CSS Module
 
 function PetProfile() {
+    useEffect(() => {
+        document.title = "MISHTIKA - Pet Profile";
+    }, []);
     const [pets, setPets] = useState([]);
     const token = localStorage.getItem('token');
 
@@ -43,26 +47,35 @@ function PetProfile() {
     }, [token]);
 
     return (
-        <Container className="mt-5">
-            <h1>Your Pets</h1>
+        <Container className={`${styles.petProfileContainer} mt-5`}> {/* Apply the CSS Module class */}
+            <h1 className={styles.petProfileTitle}>Your Pets</h1> {/* Apply the CSS Module class */}
             <ListGroup>
                 {pets.map((pet) => (
-                    <ListGroup.Item key={pet._id}>
-                        <Row>
-                            <Col>
+                    <ListGroup.Item key={pet._id} className={styles.petItem}> {/* Apply the CSS Module class */}
+                        <Row className="align-items-center"> {/* Vertically align items */}
+                            <Col xs={12} md={3} className="text-center"> {/* Center the image on small screens */}
+                                {pet.pictures && pet.pictures.length > 0 && (
+                                    <img
+                                        src={pet.pictures[0]} // Display the first picture
+                                        alt={`${pet.name}`}
+                                        className={styles.petImage}
+                                    />
+                                )}
+                            </Col>
+                            <Col xs={12} md={6}>
                                 <div>
-                                    <strong>{pet.name}</strong> - {pet.species} ({pet.breed})
-                                    <p>Age: {pet.ageYears} years, {pet.ageMonths} months</p>
-                                    <p>Weight: {pet.weight} kg</p>
-                                    {pet.medicalInfo && <p>Medical Info: {pet.medicalInfo}</p>}
+                                    <strong className={styles.petName}>{pet.name}</strong> {/* Apply the CSS Module class */} - {pet.species} ({pet.breed})
+                                    <p className={styles.petInfo}>Age: {pet.ageYears} years, {pet.ageMonths} months</p> {/* Apply the CSS Module class */}
+                                    <p className={styles.petInfo}>Weight: {pet.weight} kg</p> {/* Apply the CSS Module class */}
+                                    {pet.medicalInfo && <p className={styles.petInfo}>Medical Info: {pet.medicalInfo}</p>} {/* Apply the CSS Module class */}
                                 </div>
                             </Col>
-                            <Col xs="auto">
-                                <Button variant="danger" onClick={() => handleDelete(pet._id)}>
+                            <Col xs={12} md={3} className="text-center"> {/* Center the buttons on small screens */}
+                                <Button variant="danger" className={`${styles.deleteButton} mb-2`} onClick={() => handleDelete(pet._id)}> {/* Apply the CSS Module class */}
                                     Delete
                                 </Button>
                                 <Link to={`/editpet/${pet._id}`}>
-                                    <Button variant="primary" className="ms-2">
+                                    <Button variant="primary" className={`${styles.editButton}`}> {/* Apply the CSS Module class */}
                                         Edit
                                     </Button>
                                 </Link>
@@ -76,3 +89,4 @@ function PetProfile() {
 }
 
 export default PetProfile;
+

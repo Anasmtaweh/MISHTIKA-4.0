@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
@@ -8,6 +8,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 function AdminLogin() {
+    useEffect(() => {
+        document.title = "MISHTIKA - Admin Login";
+    }, []);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -42,6 +45,7 @@ function AdminLogin() {
     };
 
     return (
+        
         <Container className="mt-5">
             <Row className="justify-content-md-center">
                 <Col md={6}>
@@ -65,6 +69,7 @@ function AdminLogin() {
                 </Col>
             </Row>
         </Container>
+        
     );
 }
 

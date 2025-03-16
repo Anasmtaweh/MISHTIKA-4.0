@@ -5,20 +5,22 @@ import Signup from './pages/Signup';
 import PetProfile from './pages/PetProfile';
 import ProtectedRoute from './components/ProtectedRoute';
 import PetForm from './pages/PetForm';
-import NavigationBar from './components/NavigationBar';
 import AIChat from './pages/AIChat';
 import Scheduler from './pages/Scheduler';
 import EditPet from './pages/EditPet';
 import AdminDashboard from './admin/AdminDashboard';
 import AdminLogin from './admin/AdminLogin';
-import AdminUserManagement from './admin/AdminUserManagement'; // Import the new component
+import AdminUserManagement from './admin/AdminUserManagement';
 import AdminPetManagement from './admin/AdminPetManagement';
 import AdminSettings from './admin/AdminSettings';
+import UserSettings from './pages/UserSettings';
+import Header from './components/Header'; // Import Header
+import Footer from './components/Footer'; // Import Footer
 
 function App() {
     return (
         <BrowserRouter>
-            <NavigationBar />
+            <Header /> {/* Render Header */}
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
@@ -31,16 +33,18 @@ function App() {
                     <Route path="/aichat" element={<AIChat />} />
                     <Route path="/scheduler" element={<Scheduler />} />
                     <Route path="/editpet/:petId" element={<EditPet />} />
+                    <Route path="/usersettings" element={<UserSettings />} />
                 </Route>
 
                 {/* Protected route for admins */}
                 <Route element={<ProtectedRoute isAdminRoute={true} />}>
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/users" element={<AdminUserManagement />} /> {/* New admin-only route */}
+                    <Route path="/admin/users" element={<AdminUserManagement />} />
                     <Route path="/admin/pets" element={<AdminPetManagement />} />
                     <Route path="/admin/settings" element={<AdminSettings />} />
                 </Route>
             </Routes>
+            <Footer /> {/* Render Footer */}
         </BrowserRouter>
     );
 }

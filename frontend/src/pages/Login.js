@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
@@ -6,8 +6,13 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import styles from './Login.module.css'; // Import the CSS Module
 
 function Login() {
+    useEffect(() => {
+        document.title = "MISHTIKA - Login";
+    }, []);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -42,10 +47,10 @@ function Login() {
     };
 
     return (
-        <Container className="mt-5">
+        <Container className={styles.loginContainer}> {/* Use the CSS Module class */}
             <Row className="justify-content-md-center">
                 <Col md={6}>
-                    <h1>Login Page</h1>
+                    <h1 className={styles.loginTitle}>Login Page</h1> {/* Use the CSS Module class */}
                     {error && <div className="alert alert-danger">{error}</div>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -58,16 +63,16 @@ function Login() {
                             <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" className={styles.loginButton}> {/* Use the CSS Module class */}
                             Login
                         </Button>
                         <div className="mt-3">
                             <p>
                                 Don't have an account?{' '}
-                                <Link to="/signup">Signup</Link>
+                                <Link to="/signup" className={styles.linkButton}>Signup</Link> {/* Use the new CSS Module class */}
                             </p>
                             <p>
-                                Are you an admin? <Link to="/admin/login">Admin Login</Link>
+                                Are you an admin? <Link to="/admin/login" className={styles.linkButton}>Admin Login</Link> {/* Use the new CSS Module class */}
                             </p>
                         </div>
                     </Form>

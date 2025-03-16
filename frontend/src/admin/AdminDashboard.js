@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
-
 function AdminDashboard() {
+    useEffect(() => {
+        document.title = "MISHTIKA - Admin Dashboard";
+    }, []);
+
     const [dashboardData, setDashboardData] = useState(null);
     const [error, setError] = useState('');
     const token = localStorage.getItem('token');
@@ -43,6 +46,7 @@ function AdminDashboard() {
     }
 
     return (
+        
         <Container className="mt-5">
             <h1>Admin Dashboard</h1>
             <Table striped bordered hover>
@@ -77,6 +81,7 @@ function AdminDashboard() {
                 ))}
             </ul>
         </Container>
+        
     );
 }
 

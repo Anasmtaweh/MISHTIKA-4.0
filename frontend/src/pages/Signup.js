@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import styles from './Signup.module.css'; // Import the CSS Module
 
 function Signup() {
+    useEffect(() => {
+        document.title = "MISHTIKA - Signup";
+    }, []);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -49,35 +53,37 @@ function Signup() {
     };
 
     return (
-        <Container className="mt-5">
-            <h1>Signup Page</h1>
+
+        <Container className={`${styles.signupContainer} mt-5`}>
+            <h1 className={styles.signupTitle}>Signup Page</h1>
             {error && <div className="alert alert-danger">{error}</div>}
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Form.Group className={`mb-3 ${styles.formGroup}`} controlId="formBasicEmail">
+                    <Form.Label className={styles.formLabel}>Email address</Form.Label>
+                    <Form.Control className={styles.formControl} type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <Form.Group className={`mb-3 ${styles.formGroup}`} controlId="formBasicPassword">
+                    <Form.Label className={styles.formLabel}>Password</Form.Label>
+                    <Form.Control className={styles.formControl} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                <Form.Group className={`mb-3 ${styles.formGroup}`} controlId="formBasicUsername">
+                    <Form.Label className={styles.formLabel}>Username</Form.Label>
+                    <Form.Control className={styles.formControl} type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicAge">
-                    <Form.Label>Age</Form.Label>
-                    <Form.Control type="number" placeholder="Enter age" value={age} onChange={(e) => setAge(e.target.value)} required min="13" max="120" />
+                <Form.Group className={`mb-3 ${styles.formGroup}`} controlId="formBasicAge">
+                    <Form.Label className={styles.formLabel}>Age</Form.Label>
+                    <Form.Control className={styles.formControl} type="number" placeholder="Enter age" value={age} onChange={(e) => setAge(e.target.value)} required min="13" max="120" />
                 </Form.Group>
 
-                <Button variant="primary" type="submit">
+                <Button className={`${styles.signupButton}`} variant="primary" type="submit">
                     Signup
                 </Button>
             </Form>
         </Container>
+
     );
 }
 

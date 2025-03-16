@@ -17,12 +17,37 @@ router.post('/add', async (req, res) => {
             return res.status(400).json({ message: 'Age in months must be 11 or less' });
         }
 
+        if (typeof ageYears !== 'number' || ageYears < 0) {
+            return res.status(400).json({ message: 'Age in years must be a non-negative number' });
+        }
+
+        if (typeof ageMonths !== 'number' || ageMonths < 0 || ageMonths > 11) {
+            return res.status(400).json({ message: 'Age in months must be a number between 0 and 11' });
+        }
+
+        if (typeof weight !== 'number' || weight < 0) {
+            return res.status(400).json({ message: 'Weight must be a non-negative number' });
+        }
+
+        if (!['Cat', 'Dog'].includes(species)) {
+            return res.status(400).json({ message: 'Species must be either Cat or Dog' });
+        }
+
+        // Check if the owner exists
+        const user = await User.findById(owner);
+        if (!user) {
+            return res.status(404).json({ message: 'Owner not found' });
+        }
+
         // Create a new pet (pictures are optional)
         const newPet = new Pet({ name, ageYears, ageMonths, weight, species, breed, medicalInfo, owner, pictures });
         await newPet.save();
         res.status(201).json(newPet);
     } catch (error) {
         console.error(error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: 'Validation error', details: error.errors });
+        }
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -31,12 +56,28 @@ router.post('/add', async (req, res) => {
 router.get('/owner/:ownerId', async (req, res) => {
     try {
         const pets = await Pet.find({ owner: req.params.ownerId });
+        if (!pets || pets.length === 0) {
+            return res.status(404).json({ message: 'No pets found for this user' });
+        }
         // Fetch owner names for each pet
         const petsWithOwnerNames = await Promise.all(pets.map(async (pet) => {
             const owner = await User.findById(pet.owner);
             return { ...pet._doc, ownerName: owner ? owner.username : 'Unknown' }; // add owner name to the pet
         }));
         res.json(petsWithOwnerNames);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+// Get all pets
+router.get('/', async (req, res) => {
+    try {
+        const pets = await Pet.find({});
+        if (!pets || pets.length === 0) {
+            return res.status(404).json({ message: 'No pets found' });
+        }
+        res.json(pets);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -78,6 +119,9 @@ router.put('/:id', async (req, res) => {
         res.json(updatedPet);
     } catch (error) {
         console.error(error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: 'Validation error', details: error.errors });
+        }
         res.status(500).json({ message: 'Server error' });
     }
 });

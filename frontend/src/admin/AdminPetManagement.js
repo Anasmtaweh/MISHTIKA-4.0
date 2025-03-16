@@ -6,6 +6,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function AdminPetManagement() {
+    useEffect(() => {
+        document.title = "MISHTIKA - Pet Management";
+    }, []);
     const [pets, setPets] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [petToDelete, setPetToDelete] = useState(null);
@@ -52,6 +55,7 @@ function AdminPetManagement() {
     };
 
     return (
+        
         <Container className="mt-5">
             <h2>Pet Management</h2>
             {error && <div className="alert alert-danger">{error}</div>}
@@ -99,6 +103,7 @@ function AdminPetManagement() {
                 </Modal.Footer>
             </Modal>
         </Container>
+       
     );
 }
 

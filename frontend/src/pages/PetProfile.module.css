@@ -1,0 +1,65 @@
+/* PetProfile.module.css */
+.petProfileContainer {
+    background-color: var(--secondary-color);
+    padding: var(--padding-large);
+    border-radius: var(--border-radius-medium);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: var(--margin-large);
+    max-width: 1000px; /* Increased max-width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.petProfileTitle {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: var(--margin-large);
+}
+
+.petItem {
+    background-color: var(--background-color);
+    border-color: var(--primary-color);
+    margin-bottom: var(--margin-large); /* Increased margin-bottom */
+    border-radius: var(--border-radius-medium); /* Increased border-radius */
+    padding: var(--padding-medium); /* Added padding */
+}
+
+.petName {
+    color: var(--text-color);
+    font-size: 1.2rem; /* Increased font-size */
+}
+
+.petInfo {
+    color: var(--text-color);
+    margin-bottom: var(--margin-small);
+}
+
+.deleteButton {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    width: 100%; /* Make the button full width */
+}
+
+.deleteButton:hover {
+    background-color: #b32a38; /* Darker shade on hover */
+    border-color: #b32a38;
+}
+
+.editButton {
+    background-color: var(--accent-color-1);
+    border-color: var(--accent-color-1);
+    width: 100%; /* Make the button full width */
+}
+
+.editButton:hover {
+    background-color: #804022; /* Darker shade on hover */
+    border-color: #804022;
+}
+
+.petImage {
+    width: 150px; /* Adjust the width as needed */
+    height: 150px; /* Adjust the height as needed */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    border-radius: 50%; /* Make the image round */
+    margin-bottom: var(--margin-medium); /* Add margin below the image */
+}

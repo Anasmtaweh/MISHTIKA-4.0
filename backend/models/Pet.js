@@ -35,15 +35,19 @@ const petSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    pictures: [{ type: String }], // Array of picture URLs
+    pictures: {
+        type: [String], // Array of picture URLs
+        default: [],
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
+}, {
+    timestamps: true, // Add createdAt and updatedAt timestamps
 });
 
 const Pet = mongoose.model('Pet', petSchema, 'pets');
-
 
 module.exports = Pet;

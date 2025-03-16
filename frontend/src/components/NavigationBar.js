@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
+import styles from './NavigationBar.module.css'; // Correct import: Use CSS Module
 
 function NavigationBar() {
     const location = useLocation();
@@ -33,36 +34,37 @@ function NavigationBar() {
 
     return (
         !isLoginPage && !isSignupPage && !isAdminLoginPage && (
-            <Navbar bg="dark" data-bs-theme="dark">
+            <Navbar className={styles.navbar} data-bs-theme="dark" expand="lg"> {/* Apply the CSS Module class */}
                 <Container>
-                    <Navbar.Brand href="#home">Pet Project</Navbar.Brand>
-                    <Nav className="me-auto">
-                        {!isLoggedIn && <Nav.Link as={Link} to="/">Login</Nav.Link>}
-                        {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
-                        {isLoggedIn && showUserLink && (
-                            <>
-                                <Nav.Link as={Link} to="/petprofile">Pet Profile</Nav.Link>
-                                <Nav.Link as={Link} to="/petform">Add Pet</Nav.Link>
-                                <Nav.Link as={Link} to="/aichat">AI Chat</Nav.Link>
-                                <Nav.Link as={Link} to="/scheduler">Scheduler</Nav.Link>
-                            </>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            {!isLoggedIn && <Nav.Link as={Link} to="/" className={styles.navLink}>Login</Nav.Link>} {/* Apply the CSS Module class */}
+                            {!isLoggedIn && <Nav.Link as={Link} to="/signup" className={styles.navLink}>Signup</Nav.Link>} {/* Apply the CSS Module class */}
+                            {isLoggedIn && showUserLink && (
+                                <>
+                                    <Nav.Link as={Link} to="/petprofile" className={styles.navLink}>Pet Profile</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/petform" className={styles.navLink}>Add Pet</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/aichat" className={styles.navLink}>AI Chat</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/scheduler" className={styles.navLink}>Scheduler</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/usersettings" className={styles.navLink}>Settings</Nav.Link> {/* Apply the CSS Module class */}
+                                </>
+                            )}
+                            {isLoggedIn && showAdminLink && (
+                                <>
+                                    <Nav.Link as={Link} to="/admin/dashboard" className={styles.navLink}>Admin Dashboard</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/admin/users" className={styles.navLink}>User Management</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/admin/pets" className={styles.navLink}>Pet Management</Nav.Link> {/* Apply the CSS Module class */}
+                                    <Nav.Link as={Link} to="/admin/settings" className={styles.navLink}>Settings</Nav.Link> {/* Apply the CSS Module class */}
+                                </>
+                            )}
+                        </Nav>
+                        {isLoggedIn && (
+                            <Button variant="light" onClick={handleLogout}>
+                                Logout
+                            </Button>
                         )}
-                        {isLoggedIn && showAdminLink && (
-                            <>
-                                <Nav.Link as={Link} to="/admin/dashboard">Admin Dashboard</Nav.Link>
-                                <Nav.Link as={Link} to="/admin/users">User Management</Nav.Link>
-                                <Nav.Link as={Link} to="/admin/pets">Pet Management</Nav.Link>
-                                <Nav.Link as={Link} to="/admin/settings">Settings</Nav.Link>
-
-                            </>
-                        )}
-
-                    </Nav>
-                    {isLoggedIn && (
-                        <Button variant="light" onClick={handleLogout}>
-                            Logout
-                        </Button>
-                    )}
+                    </Navbar.Collapse>
                 </Container>
             </Navbar>
         )

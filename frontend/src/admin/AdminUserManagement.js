@@ -6,6 +6,10 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function AdminUserManagement() {
+    useEffect(() => {
+        document.title = "MISHTIKA - User Management";
+    }, []);
+
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
@@ -66,6 +70,7 @@ function AdminUserManagement() {
     };
 
     return (
+       
         <Container className="mt-5">
             <h2>User Management</h2>
             {error && <div className="alert alert-danger">{error}</div>}
@@ -119,6 +124,7 @@ function AdminUserManagement() {
                 </Modal.Footer>
             </Modal>
         </Container>
+        
     );
 }
 
