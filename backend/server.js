@@ -5,6 +5,7 @@ const config = require('./config/config'); // Import config
 const authRoutes = require('./routes/auth'); // Import auth routes
 const petRoutes = require('./routes/pets'); // Import pet routes
 const adminRoutes = require('./routes/admin'); // Import admin routes
+const scheduleRoutes = require('./routes/schedules'); // Import schedule routes
 
 const app = express();
 const port = 3001;
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes); // Use auth routes
 app.use('/pets', petRoutes); // Use pet routes
 app.use('/admin', adminRoutes); // Use admin routes
+app.use('/schedules', scheduleRoutes); // Use schedule routes
 // Add new routes for user management
 app.use('/admin/users', adminRoutes);
 app.use('/admin/pets', adminRoutes);

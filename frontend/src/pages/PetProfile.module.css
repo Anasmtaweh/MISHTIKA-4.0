@@ -5,7 +5,7 @@
     border-radius: var(--border-radius-medium);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: var(--margin-large);
-    max-width: 1000px; /* Increased max-width */
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -18,48 +18,73 @@
 
 .petItem {
     background-color: var(--background-color);
-    border-color: var(--primary-color);
-    margin-bottom: var(--margin-large); /* Increased margin-bottom */
-    border-radius: var(--border-radius-medium); /* Increased border-radius */
-    padding: var(--padding-medium); /* Added padding */
+    border: 1px solid var(--primary-color);
+    margin-bottom: var(--margin-large);
+    border-radius: var(--border-radius-medium);
+    padding: var(--padding-medium);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
+}
+
+.petItem:hover {
+    transform: translateY(-5px); /* Lift the card slightly on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
 }
 
 .petName {
     color: var(--text-color);
-    font-size: 1.2rem; /* Increased font-size */
+    font-size: 1.2rem;
+    font-weight: bold; /* Make the name bold */
+    margin-bottom: var(--margin-small); /* Add some space below the name */
 }
 
 .petInfo {
     color: var(--text-color);
     margin-bottom: var(--margin-small);
 }
+.petInfoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
 
 .deleteButton {
     background-color: var(--danger-color);
     border-color: var(--danger-color);
-    width: 100%; /* Make the button full width */
+    width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Add transition for hover effect */
 }
 
 .deleteButton:hover {
-    background-color: #b32a38; /* Darker shade on hover */
+    background-color: #b32a38;
     border-color: #b32a38;
 }
 
 .editButton {
     background-color: var(--accent-color-1);
     border-color: var(--accent-color-1);
-    width: 100%; /* Make the button full width */
+    width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Add transition for hover effect */
 }
 
 .editButton:hover {
-    background-color: #804022; /* Darker shade on hover */
+    background-color: #804022;
     border-color: #804022;
 }
 
 .petImage {
-    width: 150px; /* Adjust the width as needed */
-    height: 150px; /* Adjust the height as needed */
-    object-fit: cover; /* Maintain aspect ratio and cover the container */
-    border-radius: 50%; /* Make the image round */
-    margin-bottom: var(--margin-medium); /* Add margin below the image */
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: var(--margin-medium);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow to the image */
+}
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }

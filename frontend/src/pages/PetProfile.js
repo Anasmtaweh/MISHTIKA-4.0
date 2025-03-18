@@ -47,35 +47,37 @@ function PetProfile() {
     }, [token]);
 
     return (
-        <Container className={`${styles.petProfileContainer} mt-5`}> {/* Apply the CSS Module class */}
-            <h1 className={styles.petProfileTitle}>Your Pets</h1> {/* Apply the CSS Module class */}
+        <Container className={`${styles.petProfileContainer} mt-5`}>
+            <h1 className={styles.petProfileTitle}>Your Pets</h1>
             <ListGroup>
                 {pets.map((pet) => (
-                    <ListGroup.Item key={pet._id} className={styles.petItem}> {/* Apply the CSS Module class */}
-                        <Row className="align-items-center"> {/* Vertically align items */}
-                            <Col xs={12} md={3} className="text-center"> {/* Center the image on small screens */}
+                    <ListGroup.Item key={pet._id} className={styles.petItem}>
+                        <Row className="align-items-center">
+                            <Col xs={12} md={4} className="text-center">
                                 {pet.pictures && pet.pictures.length > 0 && (
-                                    <img
-                                        src={pet.pictures[0]} // Display the first picture
-                                        alt={`${pet.name}`}
-                                        className={styles.petImage}
-                                    />
+                                    <div className={styles.imageContainer}>
+                                        <img
+                                            src={pet.pictures[0]}
+                                            alt={`${pet.name}`}
+                                            className={styles.petImage}
+                                        />
+                                    </div>
                                 )}
                             </Col>
-                            <Col xs={12} md={6}>
-                                <div>
-                                    <strong className={styles.petName}>{pet.name}</strong> {/* Apply the CSS Module class */} - {pet.species} ({pet.breed})
-                                    <p className={styles.petInfo}>Age: {pet.ageYears} years, {pet.ageMonths} months</p> {/* Apply the CSS Module class */}
-                                    <p className={styles.petInfo}>Weight: {pet.weight} kg</p> {/* Apply the CSS Module class */}
-                                    {pet.medicalInfo && <p className={styles.petInfo}>Medical Info: {pet.medicalInfo}</p>} {/* Apply the CSS Module class */}
+                            <Col xs={12} md={5}>
+                                <div className={styles.petInfoContainer}>
+                                    <strong className={styles.petName}>{pet.name}</strong> - {pet.species} ({pet.breed})
+                                    <p className={styles.petInfo}>Age: {pet.ageYears} years, {pet.ageMonths} months</p>
+                                    <p className={styles.petInfo}>Weight: {pet.weight} kg</p>
+                                    {pet.medicalInfo && <p className={styles.petInfo}>Medical Info: {pet.medicalInfo}</p>}
                                 </div>
                             </Col>
-                            <Col xs={12} md={3} className="text-center"> {/* Center the buttons on small screens */}
-                                <Button variant="danger" className={`${styles.deleteButton} mb-2`} onClick={() => handleDelete(pet._id)}> {/* Apply the CSS Module class */}
+                            <Col xs={12} md={3} className="d-flex flex-column justify-content-center align-items-center">
+                                <Button variant="danger" className={`${styles.deleteButton} mb-2`} onClick={() => handleDelete(pet._id)}>
                                     Delete
                                 </Button>
-                                <Link to={`/editpet/${pet._id}`}>
-                                    <Button variant="primary" className={`${styles.editButton}`}> {/* Apply the CSS Module class */}
+                                <Link to={`/editpet/${pet._id}`} className="w-100">
+                                    <Button variant="primary" className={`${styles.editButton} w-100`}>
                                         Edit
                                     </Button>
                                 </Link>
@@ -89,4 +91,3 @@ function PetProfile() {
 }
 
 export default PetProfile;
-

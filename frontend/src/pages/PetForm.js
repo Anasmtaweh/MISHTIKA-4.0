@@ -72,9 +72,9 @@ function PetForm() {
             // Create pet data object
             const petData = {
                 name,
-                ageYears,
-                ageMonths,
-                weight,
+                ageYears: Number(ageYears), // Convert to number here
+                ageMonths: Number(ageMonths), // Convert to number here
+                weight: Number(weight), // Convert to number here
                 species,
                 breed,
                 medicalInfo,
@@ -91,7 +91,15 @@ function PetForm() {
             setError(err.response?.data?.message || 'An error occurred');
         }
     };
-
+    const handleAgeYearsChange = (e) => {
+        setAgeYears(e.target.value);
+    };
+    const handleAgeMonthsChange = (e) => {
+        setAgeMonths(e.target.value);
+    };
+    const handleWeightChange = (e) => {
+        setWeight(e.target.value);
+    };
     const handleBreedChange = (e) => {
         setBreed(e.target.value);
         setIsOtherBreed(e.target.value === 'other'); // Update isOtherBreed
@@ -108,15 +116,15 @@ function PetForm() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label className={styles.formLabel}>Age (Years)</Form.Label> {/* Apply the CSS Module class */}
-                    <Form.Control className={styles.formControl} type="number" value={ageYears} onChange={(e) => setAgeYears(e.target.value)} required min="0" /> {/* Apply the CSS Module class */}
+                    <Form.Control className={styles.formControl} type="number" value={ageYears} onChange={handleAgeYearsChange} required min="0" /> {/* Apply the CSS Module class */}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label className={styles.formLabel}>Age (Months)</Form.Label> {/* Apply the CSS Module class */}
-                    <Form.Control className={styles.formControl} type="number" value={ageMonths} onChange={(e) => setAgeMonths(e.target.value)} required min="0" max="11" /> {/* Apply the CSS Module class */}
+                    <Form.Control className={styles.formControl} type="number" value={ageMonths} onChange={handleAgeMonthsChange} required min="0" max="11" /> {/* Apply the CSS Module class */}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label className={styles.formLabel}>Weight (kg)</Form.Label> {/* Apply the CSS Module class */}
-                    <Form.Control className={styles.formControl} type="number" value={weight} onChange={(e) => setWeight(e.target.value)} required min="0" /> {/* Apply the CSS Module class */}
+                    <Form.Control className={styles.formControl} type="number" value={weight} onChange={handleWeightChange} required min="0" /> {/* Apply the CSS Module class */}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label className={styles.formLabel}>Species</Form.Label> {/* Apply the CSS Module class */}
