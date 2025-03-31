@@ -25,6 +25,7 @@
     border-color: var(--primary-color);
     border-radius: var(--border-radius-small);
     padding: var(--padding-small);
+    background-color: var(--background-color);
 }
 
 .petFormButton {
@@ -38,11 +39,35 @@
 }
 
 .speciesIcon {
-    margin-right: 5px; /* Add some spacing between the icon and the text */
-    vertical-align: middle; /* Align the icon vertically with the text */
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.speciesIcon:hover {
+    transform: scale(1.1);
+}
+
+.speciesSelection {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .speciesOption {
-    display: flex;
-    align-items: center;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.speciesOption:hover {
+    border-color: var(--accent-color-1);
+}
+
+.selected {
+    border-color: var(--accent-color-1);
 }

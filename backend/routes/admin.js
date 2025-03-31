@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Pet = require('../models/Pet');
+const Schedule = require('../models/Schedule');
+const RecentActivity = require('../models/RecentActivity');
 const adminMiddleware = require('../middleware/adminMiddleware');
 const bcrypt = require('bcrypt');
 
@@ -9,14 +11,12 @@ router.get('/dashboard', adminMiddleware, async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
         const totalPets = await Pet.countDocuments();
-        // For the moment we will simulate the users active
-        const activeUsers = 10;
+        const activeUsers = await User.countDocuments({ isActive: true });
 
-        const recentActivity = [
-            // For now, we'll return static data. Later, we'll query the database.
-            { type: 'user_signup', timestamp: new Date(), details: 'New user signed up' },
-            { type: 'pet_added', timestamp: new Date(), details: 'New pet added' },
-        ];
+        // Fetch recent activity
+        const recentActivity = await RecentActivity.find()
+            .sort({ timestamp: -1 }) // Sort by timestamp descending
+            .limit(10); // Limit to the last 10 activities
 
         res.json({
             totalUsers,
@@ -42,8 +42,31 @@ router.get('/users', adminMiddleware, async (req, res) => {
 // Delete user
 router.delete('/users/:id', adminMiddleware, async (req, res) => {
     try {
-        await User.findByIdAndDelete(req.params.id);
-        res.json({ message: 'User deleted' });
+        const userId = req.params.id;
+
+        // Delete associated pets
+        const pets = await Pet.find({ owner: userId });
+        await Pet.deleteMany({ owner: userId });
+        // Delete associated schedules
+        await Schedule.deleteMany({ owner: userId });
+        // Delete the user
+        const user = await User.findByIdAndDelete(userId);
+        // Add recent activity
+        await RecentActivity.create({
+            type: 'user_deleted',
+            details: `User deleted: ${user.email}`,
+            userId: user._id,
+        });
+        // Add recent activity for each pet deleted
+        for (const pet of pets) {
+            await RecentActivity.create({
+                type: 'pet_deleted',
+                details: `Pet deleted: ${pet.name}`,
+                userId: pet.owner,
+                petId: pet._id,
+            });
+        }
+        res.json({ message: 'User and associated pets and schedules deleted' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -82,7 +105,17 @@ router.get('/pets', adminMiddleware, async (req, res) => {
 // Delete Pet
 router.delete('/pets/:id', adminMiddleware, async (req, res) => {
     try {
-        await Pet.findByIdAndDelete(req.params.id);
+        const pet = await Pet.findByIdAndDelete(req.params.id);
+        if (!pet) {
+            return res.status(404).json({ message: 'Pet not found' });
+        }
+        // Add recent activity
+        await RecentActivity.create({
+            type: 'pet_deleted',
+            details: `Pet deleted: ${pet.name}`,
+            userId: pet.owner,
+            petId: pet._id,
+        });
         res.json({ message: 'Pet deleted' });
     } catch (error) {
         console.error(error);
@@ -102,12 +135,7 @@ router.put('/settings/password', adminMiddleware, async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Incorrect current password' });
         }
-        // Validate the new password (before hashing)
-        const isValidNewPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#+-])[A-Za-z\d@$!%*?&#+-]{8,}$/.test(newPassword);
-        if (!isValidNewPassword) {
-            return res.status(400).json({ message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' });
-        }
-        // Remove the manual hashing here
+        // Remove the validation and hashing here
         user.password = newPassword; // Just assign the new password
         await user.save(); // Let the pre('save') hook handle the hashing
         res.json({ message: 'Password updated successfully' });

@@ -16,6 +16,10 @@ import AdminSettings from './admin/AdminSettings';
 import UserSettings from './pages/UserSettings';
 import Header from './components/Header'; // Import Header
 import Footer from './components/Footer'; // Import Footer
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import SearchPage from './pages/Search';
+
 
 function App() {
     return (
@@ -23,13 +27,17 @@ function App() {
             <Header /> {/* Render Header */}
             <Routes>
                 <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
 
                 {/* Protected routes for regular users */}
                 <Route element={<ProtectedRoute />}>
                     <Route path="/petprofile" element={<PetProfile />} />
                     <Route path="/petform" element={<PetForm />} />
+                    <Route path="/search" element={<SearchPage />} />
                     <Route path="/aichat" element={<AIChat />} />
                     <Route path="/scheduler" element={<Scheduler />} />
                     <Route path="/editpet/:petId" element={<EditPet />} />

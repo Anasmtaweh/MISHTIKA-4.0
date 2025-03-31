@@ -6,7 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Link } from 'react-router-dom';
-import styles from './PetProfile.module.css'; // Import the CSS Module
+import styles from './PetProfile.module.css';
+import { FaCat, FaDog, FaWeight, FaCalendarAlt } from 'react-icons/fa'; // Import icons
 
 function PetProfile() {
     useEffect(() => {
@@ -22,7 +23,6 @@ function PetProfile() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            // Refresh the pet list after deletion
             setPets(pets.filter((pet) => pet._id !== petId));
         } catch (error) {
             console.error('Error deleting pet:', error);
@@ -66,9 +66,19 @@ function PetProfile() {
                             </Col>
                             <Col xs={12} md={5}>
                                 <div className={styles.petInfoContainer}>
-                                    <strong className={styles.petName}>{pet.name}</strong> - {pet.species} ({pet.breed})
-                                    <p className={styles.petInfo}>Age: {pet.ageYears} years, {pet.ageMonths} months</p>
-                                    <p className={styles.petInfo}>Weight: {pet.weight} kg</p>
+                                    <strong className={styles.petName}>{pet.name}</strong>
+                                    <div className={styles.speciesInfo}>
+                                        {pet.species === 'Cat' ? <FaCat className={styles.speciesIcon} aria-hidden="true" /> : <FaDog className={styles.speciesIcon} aria-hidden="true" />}
+                                        <span className={styles.speciesName}>{pet.species} ({pet.breed})</span>
+                                    </div>
+                                    <div className={styles.petInfo}>
+                                        <FaWeight className={styles.infoIcon} aria-hidden="true" />
+                                        <span>{pet.weight} kg</span>
+                                    </div>
+                                    <div className={styles.petInfo}>
+                                        <FaCalendarAlt className={styles.infoIcon} aria-hidden="true" />
+                                        <span>{pet.ageYears} years, {pet.ageMonths} months</span>
+                                    </div>
                                     {pet.medicalInfo && <p className={styles.petInfo}>Medical Info: {pet.medicalInfo}</p>}
                                 </div>
                             </Col>

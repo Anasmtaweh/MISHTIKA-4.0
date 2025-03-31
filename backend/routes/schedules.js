@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Schedule = require('../models/Schedule');
 const User = require('../models/User');
+const RecentActivity = require('../models/RecentActivity');
 
 // Get all schedules for a user
 router.get('/owner/:ownerId', async (req, res) => {
@@ -20,6 +21,13 @@ router.post('/add', async (req, res) => {
         const { title, start, end, type, repeat, repeatType, repeatDays, owner } = req.body;
         const newSchedule = new Schedule({ title, start, end, type, repeat, repeatType, repeatDays, owner });
         await newSchedule.save();
+        // Add recent activity
+        await RecentActivity.create({
+            type: 'schedule_added',
+            details: `New schedule added: ${newSchedule.title}`,
+            userId: newSchedule.owner,
+            scheduleId: newSchedule._id,
+        });
         res.status(201).json(newSchedule);
     } catch (error) {
         console.error(error);
@@ -49,6 +57,13 @@ router.delete('/:id', async (req, res) => {
         if (!schedule) {
             return res.status(404).json({ message: 'Schedule not found' });
         }
+        // Add recent activity
+        await RecentActivity.create({
+            type: 'schedule_deleted',
+            details: `Schedule deleted: ${schedule.title}`,
+            userId: schedule.owner,
+            scheduleId: schedule._id,
+        });
         res.json({ message: 'Schedule deleted' });
     } catch (error) {
         console.error(error);
@@ -57,3 +72,4 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+

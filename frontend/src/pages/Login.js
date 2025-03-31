@@ -67,6 +67,7 @@ function Login() {
                             Login
                         </Button>
                         <div className="mt-3">
+                            <Link to="/forgot-password" className={styles.linkButton}>Forgot Password?</Link>
                             <p>
                                 Don't have an account?{' '}
                                 <Link to="/signup" className={styles.linkButton}>Signup</Link> {/* Use the new CSS Module class */}

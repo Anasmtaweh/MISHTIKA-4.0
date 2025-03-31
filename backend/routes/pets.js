@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Pet = require('../models/Pet');
 const User = require('../models/User'); // Import the User model
+const RecentActivity = require('../models/RecentActivity');
 
 // Add Pet
 router.post('/add', async (req, res) => {
@@ -42,6 +43,15 @@ router.post('/add', async (req, res) => {
         // Create a new pet (pictures are optional)
         const newPet = new Pet({ name, ageYears, ageMonths, weight, species, breed, medicalInfo, owner, pictures });
         await newPet.save();
+
+        // Add recent activity
+        await RecentActivity.create({
+            type: 'pet_added',
+            details: `New pet added: ${newPet.name}`,
+            userId: newPet.owner,
+            petId: newPet._id,
+        });
+
         res.status(201).json(newPet);
     } catch (error) {
         console.error(error);
@@ -90,6 +100,13 @@ router.delete('/:id', async (req, res) => {
         if (!pet) {
             return res.status(404).json({ message: 'Pet not found' });
         }
+        // Add recent activity
+        await RecentActivity.create({
+            type: 'pet_deleted',
+            details: `Pet deleted: ${pet.name}`,
+            userId: pet.owner,
+            petId: pet._id,
+        });
         res.json({ message: 'Pet deleted' });
     } catch (error) {
         console.error(error);
