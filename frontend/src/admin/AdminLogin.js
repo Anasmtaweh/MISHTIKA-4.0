@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import styles from '../pages/Login.module.css'; // Import the same CSS module
+
 
 function AdminLogin() {
     useEffect(() => {
@@ -26,30 +28,23 @@ function AdminLogin() {
                 password,
             });
 
-            console.log('Admin Login successful:', response.data);
-            // Store token in local storage
             localStorage.setItem('token', response.data.token);
-              if (response.data.role === 'admin') {
+            if (response.data.role === 'admin') {
                 navigate('/admin/dashboard');
-               } else {
+            } else {
                 setError('Invalid credentials.');
-               }
+            }
         } catch (err) {
             console.error('Admin Login error:', err.response?.data || err.message);
-            if (err.response?.data?.message === 'Invalid credentials') {
-                setError('Invalid email or password.');
-            } else {
-                setError('An error occurred during login.');
-            }
+            setError(err.response?.data?.message || 'An error occurred during login.');
         }
     };
 
     return (
-        
-        <Container className="mt-5">
+        <Container className={styles.loginContainer}>
             <Row className="justify-content-md-center">
                 <Col md={6}>
-                    <h1>Admin Login</h1>
+                    <h1 className={styles.loginTitle}>Admin Login</h1>
                     {error && <div className="alert alert-danger">{error}</div>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -62,14 +57,13 @@ function AdminLogin() {
                             <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" className={styles.loginButton}>
                             Admin Login
                         </Button>
                     </Form>
                 </Col>
             </Row>
         </Container>
-        
     );
 }
 

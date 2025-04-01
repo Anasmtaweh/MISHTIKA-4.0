@@ -3,6 +3,7 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import styles from './AdminSettings.module.css';
 
 function AdminSettings() {
     useEffect(() => {
@@ -99,41 +100,41 @@ function AdminSettings() {
     };
 
     return (
-        <Container className="mt-5">
-            <h1>Admin Settings</h1>
-            {error && <div className="alert alert-danger">{error}</div>}
-            {success && <div className="alert alert-success">{success}</div>}
+        <Container className={styles.settingsContainer}>
+            <h1 className={styles.settingsTitle}>Admin Settings</h1>
+            {error && <div className={`alert alert-danger`}>{error}</div>}
+            {success && <div className={`alert alert-success`}>{success}</div>}
 
-            <Form onSubmit={handlePasswordChange}>
-                <h2>Change Password</h2>
-                <Form.Group className="mb-3">
-                    <Form.Label>Current Password</Form.Label>
+            <Form className={styles.settingsSection} onSubmit={handlePasswordChange}>
+                <h2 className={styles.settingsSectionTitle}>Change Password</h2>
+                <Form.Group className="mb-3 form-group">
+                    <Form.Label className={styles.formLabel}>Current Password</Form.Label>
                     <Form.Control type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>New Password</Form.Label>
+                <Form.Group className="mb-3 form-group">
+                    <Form.Label className={styles.formLabel}>New Password</Form.Label>
                     <Form.Control type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Confirm New Password</Form.Label>
+                <Form.Group className="mb-3 form-group">
+                    <Form.Label className={styles.formLabel}>Confirm New Password</Form.Label>
                     <Form.Control type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} required />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button className={styles.saveButton} variant="primary" type="submit">
                     Save Password Changes
                 </Button>
             </Form>
 
-            <Form onSubmit={handleProfileChange}>
-                <h2>Change Profile</h2>
-                <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
+            <Form className={styles.settingsSection} onSubmit={handleProfileChange}>
+                <h2 className={styles.settingsSectionTitle}>Change Profile</h2>
+                <Form.Group className="mb-3 form-group">
+                    <Form.Label className={styles.formLabel}>Name</Form.Label>
                     <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} required />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Age</Form.Label>
+                <Form.Group className="mb-3 form-group">
+                    <Form.Label className={styles.formLabel}>Age</Form.Label>
                     <Form.Control type="number" value={age} onChange={(e) => setAge(e.target.value)} required min="13" max="120" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button className={styles.saveButton} variant="primary" type="submit">
                     Save Profile Changes
                 </Button>
             </Form>

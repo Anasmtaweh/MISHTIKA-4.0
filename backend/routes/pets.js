@@ -1,50 +1,45 @@
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/Pet');
-const User = require('../models/User'); // Import the User model
+const User = require('../models/User');
 const RecentActivity = require('../models/RecentActivity');
 
-// Add Pet
 router.post('/add', async (req, res) => {
     try {
-        const { name, ageYears, ageMonths, weight, species, breed, medicalInfo, owner, pictures } = req.body; //pictures are optional.
+        const { name, ageYears, ageMonths, weight, species, breed, medicalInfo, owner, pictures } = req.body;
 
-        // Validate input
-        if (!name || !ageYears || !ageMonths || !weight || !species || !breed || !owner) {
-            return res.status(400).json({ message: 'All fields are required' });
+        // Validate required fields
+        if (!name || !ageMonths || !weight || !species || !breed || !owner) {
+            return res.status(400).json({ message: 'Name, ageMonths, weight, species, breed, and owner are required.' });
         }
 
-        if (ageMonths > 11) {
-            return res.status(400).json({ message: 'Age in months must be 11 or less' });
+        // Validate ageMonths
+        if (ageMonths > 11 || ageMonths < 0) {
+            return res.status(400).json({ message: 'Age in months must be between 0 and 11.' });
         }
 
+        // Validate ageYears (allow 0)
         if (typeof ageYears !== 'number' || ageYears < 0) {
-            return res.status(400).json({ message: 'Age in years must be a non-negative number' });
+            return res.status(400).json({ message: 'Age in years must be a non-negative number.' });
         }
 
-        if (typeof ageMonths !== 'number' || ageMonths < 0 || ageMonths > 11) {
-            return res.status(400).json({ message: 'Age in months must be a number between 0 and 11' });
-        }
-
+        // Validate weight
         if (typeof weight !== 'number' || weight < 0) {
-            return res.status(400).json({ message: 'Weight must be a non-negative number' });
+            return res.status(400).json({ message: 'Weight must be a non-negative number.' });
         }
 
         if (!['Cat', 'Dog'].includes(species)) {
-            return res.status(400).json({ message: 'Species must be either Cat or Dog' });
+            return res.status(400).json({ message: 'Species must be either Cat or Dog.' });
         }
 
-        // Check if the owner exists
         const user = await User.findById(owner);
         if (!user) {
-            return res.status(404).json({ message: 'Owner not found' });
+            return res.status(404).json({ message: 'Owner not found.' });
         }
 
-        // Create a new pet (pictures are optional)
         const newPet = new Pet({ name, ageYears, ageMonths, weight, species, breed, medicalInfo, owner, pictures });
         await newPet.save();
 
-        // Add recent activity
         await RecentActivity.create({
             type: 'pet_added',
             details: `New pet added: ${newPet.name}`,

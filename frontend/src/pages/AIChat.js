@@ -23,7 +23,7 @@ function AIChat() {
             setMessages([...messages, newMessage]);
             setUserInput('');
 
-            const response = await axios.post('/gpt/ask', { question: userInput });
+            const response = await axios.post('http://localhost:3001/gpt/ask', { question: userInput });
             const aiResponse = { role: 'assistant', content: response.data.answer };
             setMessages([...messages, newMessage, aiResponse]);
         } catch (error) {
@@ -42,9 +42,10 @@ function AIChat() {
             <h1 className={styles.aichatTitle}>AI Chat</h1>
             <div className={styles.chatbox}>
                 {messages.map((message, index) => (
-                    <div key={index} className={message.role === 'user' ? styles.userMessage : styles.aiMessage}>
-                        {message.content}
-                    </div>
+            <div key={index} className={message.role === 'user' ? styles.userMessage : styles.aiMessage}>
+                <span className={styles.messageRole}>{message.role}: </span> {message.content}
+            </div>
+
                 ))}
             </div>
             {loading && <p>Thinking...</p>}

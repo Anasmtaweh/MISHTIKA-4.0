@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import styles from './AdminUserManagement.module.css';
 
 function AdminUserManagement() {
     useEffect(() => {
@@ -70,11 +71,10 @@ function AdminUserManagement() {
     };
 
     return (
-       
-        <Container className="mt-5">
-            <h2>User Management</h2>
-            {error && <div className="alert alert-danger">{error}</div>}
-            <Table striped bordered hover>
+        <Container className={styles.userManagementContainer}>
+            <h2 className={styles.userManagementTitle}>User Management</h2>
+            {error && <div className={`alert alert-danger ${styles.alertDanger}`}>{error}</div>}
+            <Table striped bordered hover className={styles.userManagementTable}>
                 <thead>
                     <tr>
                         <th>Email</th>
@@ -91,14 +91,14 @@ function AdminUserManagement() {
                             <td>{user.role}</td>
                             <td>{new Date(user.createdAt).toLocaleString()}</td>
                             <td>{user.isActive ? 'Active' : 'Inactive'}</td>
-                            <td>
-                                <Button variant="danger" size='sm' onClick={() => handleShowModal(user._id)}>
+                            <td className={styles.actionButtons}>
+                                <Button variant="danger" size='sm' className={styles.actionButton} onClick={() => handleShowModal(user._id)}>
                                     Delete
                                 </Button>
                                 <Button
                                     variant={user.isActive ? 'warning' : 'success'}
                                     size='sm'
-                                    className="ms-2"
+                                    className={`${styles.actionButton} ms-2`}
                                     onClick={() => handleToggleStatus(user._id, user.isActive)}
                                 >
                                     {user.isActive ? 'Deactivate' : 'Activate'}

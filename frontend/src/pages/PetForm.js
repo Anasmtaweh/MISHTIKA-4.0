@@ -43,22 +43,32 @@ function PetForm() {
         e.preventDefault();
         setError('');
 
-        if (ageMonths > 11) {
-            setError('Age in months must be 11 or less');
+        // Basic Input Validation
+        if (!name.trim()) {
+            setError('Pet name is required.');
             return;
         }
-        if (species === 'Dog' && !isOtherBreed && breed === '') {
-            setError('Please select a breed.');
+        if (isNaN(ageMonths) || ageMonths < 0 || ageMonths > 11) {
+            setError('Invalid age in months (0-11).');
             return;
         }
-        if (species === 'Cat' && !isOtherBreed && breed === '') {
-            setError('Please select a breed.');
+        if (isNaN(ageYears) || ageYears < 0) {
+            setError('Invalid age in years (0 or greater).');
             return;
         }
-        if (species !== 'Dog' && species !== 'Cat' && breed === '') {
-            setError('Please enter a breed.');
+        if (isNaN(weight) || weight < 0) {
+            setError('Invalid weight (0 or greater).');
             return;
         }
+        if (!species || (species !== 'Dog' && species !== 'Cat')) {
+            setError('Please select a species.');
+            return;
+        }
+        if (!breed.trim() && !isOtherBreed) {
+            setError('Please select or enter a breed.');
+            return;
+        }
+
 
         try {
             const token = localStorage.getItem('token');
@@ -74,7 +84,7 @@ function PetForm() {
                 breed,
                 medicalInfo,
                 owner,
-                pictures,
+                pictures: Array.from(pictures), // Ensure pictures is an array
             };
             const response = await axios.post('http://localhost:3001/pets/add', petData);
 

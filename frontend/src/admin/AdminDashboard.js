@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
+import styles from './AdminDashboard.module.css';
+import { FaUser, FaDog } from 'react-icons/fa'; // Import icons
+
 function AdminDashboard() {
     useEffect(() => {
         document.title = "MISHTIKA - Admin Dashboard";
@@ -46,42 +49,56 @@ function AdminDashboard() {
     }
 
     return (
-        
-        <Container className="mt-5">
-            <h1>Admin Dashboard</h1>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
+        <Container className={styles.dashboardContainer}>
+            <h1 className={styles.dashboardTitle}>Admin Dashboard</h1>
+            <Table striped bordered hover className={styles.dashboardTable}>
                 <tbody>
-                    <tr>
-                        <td>Total Users</td>
-                        <td>{dashboardData.totalUsers}</td>
+                    <tr className={styles.tableRow}>
+                        <td className={styles.tableData}>
+                            <FaUser className={styles.tableIcon} />
+                            <span className={styles.tableDataText}>Total Users</span>
+                        </td>
+                        <td className={styles.tableData}>{dashboardData.totalUsers}</td>
+                    </tr>
+                    <tr className={styles.tableRow}>
+                        <td className={styles.tableData}>
+                            <FaDog className={styles.tableIcon} />
+                            <span className={styles.tableDataText}>Total Pets</span>
+                        </td>
+                        <td className={styles.tableData}>{dashboardData.totalPets}</td>
                     </tr>
                     <tr>
-                        <td>Total Pets</td>
-                        <td>{dashboardData.totalPets}</td>
-                    </tr>
-                    <tr>
-                        <td>Active Users</td>
-                        <td>{dashboardData.activeUsers}</td>
+                        <td className={styles.tableData}>Active Users</td>
+                        <td className={styles.tableData}>{dashboardData.activeUsers}</td>
                     </tr>
                 </tbody>
             </Table>
+         
+          
+          <h2 className={styles.recentActivityTitle}>Recent Activity</h2>
+          <table className={styles.recentActivityTable}>
+              <thead>
+                  <tr>
+                      <th>Type</th>
+                      <th>Details</th>
+                      <th>Timestamp</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {dashboardData.recentActivity.map((activity, index) => (
+                      <tr key={index}>
+                          <td><span className={styles.recentActivityType}>{activity.type}</span></td>
+                          <td>{activity.details}</td>
+                          <td><span className={styles.recentActivityTimestamp}>{new Date(activity.timestamp).toLocaleString()}</span></td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
+          
+       
+          
 
-            <h2>Recent Activity</h2>
-            <ul>
-                {dashboardData.recentActivity.map((activity, index) => (
-                    <li key={index}>
-                        {activity.type} - {activity.details} ({new Date(activity.timestamp).toLocaleString()})
-                    </li>
-                ))}
-            </ul>
         </Container>
-        
     );
 }
 

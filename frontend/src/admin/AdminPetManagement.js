@@ -4,6 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import styles from './AdminPetManagement.module.css';
+import { FaDog, FaCat } from 'react-icons/fa';
+
 
 function AdminPetManagement() {
     useEffect(() => {
@@ -55,11 +58,10 @@ function AdminPetManagement() {
     };
 
     return (
-        
-        <Container className="mt-5">
-            <h2>Pet Management</h2>
-            {error && <div className="alert alert-danger">{error}</div>}
-            <Table striped bordered hover>
+        <Container className={styles.petManagementContainer}>
+            <h2 className={styles.petManagementTitle}>Pet Management</h2>
+            {error && <div className={`alert alert-danger`}>{error}</div>}
+            <Table striped bordered hover className={styles.petManagementTable}>
                 <thead>
                     <tr>
                         <th>Pet Name</th>
@@ -75,11 +77,13 @@ function AdminPetManagement() {
                         <tr key={pet._id}>
                             <td>{pet.name}</td>
                             <td>{pet.ownerName}</td>
-                            <td>{pet.species}</td>
+                            <td>
+                                {pet.species === 'Dog' ? <FaDog /> : pet.species === 'Cat' ? <FaCat /> : pet.species}
+                            </td>
                             <td>{pet.breed}</td>
                             <td>{pet.ageYears} years, {pet.ageMonths} months</td>
-                            <td>
-                                <Button variant="danger" onClick={() => handleShowModal(pet._id)}>
+                            <td>                               
+                                <Button variant="danger" className={styles.actionButton} onClick={() => handleShowModal(pet._id)}>
                                     Delete
                                 </Button>
                             </td>
